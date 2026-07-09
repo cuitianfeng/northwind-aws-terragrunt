@@ -1,0 +1,22 @@
+project: crossaccount
+app: devops
+owners: jeremy.zhang
+trusted_role_arns:
+- arn:aws:iam::346612984731:user/jeremy.zhang.infra
+- arn:aws:iam::346612984731:user/yoda.gao.infra
+- arn:aws:iam::346612984731:user/tianfeng.cui.infra
+- arn:aws:iam::346612984731:user/yuxing.liu
+- arn:aws:iam::346612984731:user/daniel.infra
+trusted_role_actions:
+- sts:AssumeRole
+- sts:TagSession
+role_requires_mfa: false
+inline_role_policies:
+  Adminaccess: |
+    Version: "2012-10-17"
+    Statement: 
+    - Effect: Allow
+      Action: 
+      - '*'
+      Resource: 
+      - '*'
