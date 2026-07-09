@@ -2,15 +2,15 @@ env: testnet
 project: elk
 app: es-node-02
 owners: tianfeng.cui
-instance_type: r5.large
+instance_type: t3.micro
 ami_id: ami-049f20cccc294bb90
-key_name: "cpchain-jumpserver"
+key_name: "northwind-jumpserver"
 snapshort_enabled : false
 custom_tags:
-  BillingGroup: cpchain
+  BillingGroup: northwind
 vpc_selector:
-  cidr_block: 10.10.0.0/16
-  moniker: cpchain-testnet
+  cidr_block: 192.168.0.0/16
+  moniker: northwind-testnet
 subnet_selector:
   cidr_block: 10.10.17.0/24  #subnet ip range
 ebs_block_device: 
@@ -23,9 +23,9 @@ root_block_device:
 vpc_security_group_rules: |
   ingress_with_cidr_blocks: 
   - rule: all-icmp
-    cidr_blocks: 10.0.0.0/8
+    cidr_blocks: 192.168.0.0/16
   - rule: all-all
-    cidr_blocks: 10.0.0.0/8
+    cidr_blocks: 192.168.0.0/16
     description: allow access from aws internal net
   egress_with_cidr_blocks:
   - rule: all-all
@@ -43,7 +43,7 @@ inline_role_policies:
       Action: 
       - s3:GetObject
       Resource:
-      - arn:aws:s3:::static.cpchain.com
+      - arn:aws:s3:::static.northwind.com
 custom_userdata: |
   ##create sshClient_UserConfig file
   echo "Host *" >/root/.ssh/config
@@ -85,6 +85,6 @@ custom_userdata: |
   EOF
   chown -R root:root /root/.ssh
   chmod 0600 /root/.ssh/initscript_deploy_key /root/.ssh/config
-  yum install -y git &&  git clone git@github.com-repo-0:cpchainnetworkio/ec2_init.git
+  yum install -y git &&  git clone git@github.com-repo-0:northwindnetworkio/ec2_init.git
   bash ec2_init/init.sh
   bash ec2_init/node-exporter/install_node_exporter.sh

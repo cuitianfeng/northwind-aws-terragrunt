@@ -1,4 +1,4 @@
-name: static.testnet.dolphinode.world
+name: static.testnet.northwind.world
 project: northwind-chain
 owners: tf.cui
 custom_tags:
@@ -13,8 +13,8 @@ policy: |
     - s3:GetObject
     - s3:GetObjectVersion
     Resource:
-    - arn:aws:s3:::static.testnet.dolphinode.world
-    - arn:aws:s3:::static.testnet.dolphinode.world/*
+    - arn:aws:s3:::static.testnet.northwind.world
+    - arn:aws:s3:::static.testnet.northwind.world/*
 attach_deny_insecure_transport_policy: false
 static_website_enabled: true
 website: {}

@@ -39,8 +39,10 @@ remote_state {
   backend = "s3"
   config = {
     encrypt        = true
-    bucket         = "${local.bucket_prefix}-${local.account_name}-${local.aws_region}-tfstate"
-    key            = "${path_relative_to_include()}/terraform.tfstate"
+    #bucket         = "${local.bucket_prefix}-${local.account_name}-${local.aws_region}-tfstate"
+    #key            = "${path_relative_to_include()}/terraform.tfstate"
+    bucket         = "velafi-candidate-tfstate-bucket"
+    key            = "assessment.tfstate"
     region         = local.aws_region
     dynamodb_table = "terraform-locks"
   }

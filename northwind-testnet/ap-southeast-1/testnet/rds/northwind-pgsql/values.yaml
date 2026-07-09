@@ -8,18 +8,18 @@ major_engine_version: "13"
 allocated_storage: 100
 max_allocated_storage: 1000
 performance_insights_enabled: true
-instance_class: db.m6g.large
+instance_class: db.t3.micro
 vpc_selector:
-  cidr_block: 10.20.0.0/16
+  cidr_block: 192.168.0.0/16
   moniker: northwind-testnet
 subnet_selector: 
   cidr_blocks: 
-  - 10.20.15.0/24
-  - 10.20.16.0/24
+  - 192.168.64.0/18
+  - 192.168.128.0/18
 vpc_security_group_rules: |
   ingress_with_cidr_blocks:
   - rule: all-all
-    cidr_blocks: 10.20.0.0/16
+    cidr_blocks: 192.168.0.0/16
   egress_with_cidr_blocks:
   - rule: all-all
     cidr_blocks: 0.0.0.0/0
