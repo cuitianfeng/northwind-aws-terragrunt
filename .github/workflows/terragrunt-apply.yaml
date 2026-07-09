@@ -4,26 +4,15 @@ on:
     types:
       - closed
     paths:
-      - 'automation/**'
-      - 'share-services/**'
-      - 'l2dex*/**'
-      - 'gamefi-nonprod/**'
-      - 'gameplus*/**'
-      - 'bitos-nonprod/**'
-      - 'teleport*/**'
-      - 'log-archive*/**'
-      - 'bitnetwork*/**'
-      - 'mantle-mainnet/**'
-      - 'mantle-devops-infra/**' 
-      - 'mantle-testnet/**' 
-      - 'bank-mainnet/**'
+      - 'northwind-testnet/**' 
 permissions:
   id-token: write
   contents: read
   pull-requests: read
 jobs: 
   apply:
-    runs-on: [self-hosted, Linux, X64, eks, prod, infra, terragrunt]
+    #runs-on: [self-hosted, Linux, X64, eks, prod, infra, terragrunt]
+    runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
     - name: Checkout Code

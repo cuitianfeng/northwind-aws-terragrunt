@@ -11,7 +11,8 @@ permissions:
   pull-requests: read
 jobs: 
   plan:
-    runs-on: [self-hosted, Linux, X64, eks, prod, infra, terragrunt]
+    #runs-on: [self-hosted, Linux, X64, eks, prod, infra, terragrunt]
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
       uses: actions/checkout@main
