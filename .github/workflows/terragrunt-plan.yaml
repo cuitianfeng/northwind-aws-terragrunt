@@ -1,0 +1,76 @@
+name: Terragrunt Plan
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'northwind-testnet/**' 
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+jobs: 
+  plan:
+    runs-on: [self-hosted, Linux, X64, eks, prod, infra, terragrunt]
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@main
+    - name: configure aws credentials
+      id: tfcreds
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::346612984731:role/githubactions-oidc-terragrunt
+        role-session-name: GitHub_to_AWS_by_TF
+        aws-region: us-east-2
+        role-duration-seconds: 3600
+        output-credentials: true
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.1.8
+        terraform_wrapper: false
+    - name: Setup Terragrunt
+      uses: autero1/action-terragrunt@v1.1.0
+      with:
+        terragrunt_version: 0.36.6
+    - name: Terragrunt Plan
+      run: |
+        source scripts/bash-colors.sh
+        source scripts/bsfl.sh
+        cmd="terraform -version"
+        echo; clr_bold clr_green ">>> ${cmd}"; ${cmd}
+        cmd="terragrunt -version"
+        echo; clr_bold clr_green ">>> ${cmd}"; ${cmd}
+        URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files?per_page=100"
+        response=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -H "Accept: application/vnd.github.v3+json" -s -X GET -G $URL)
+        echo $response
+        CHANGED_FILES=$(echo "${response}" | jq -r '.[] | .filename' | egrep '/values.yaml')
+        file_count=$(echo "${CHANGED_FILES}" | wc -l)
+        if [ $file_count -gt 10 ]; then
+          clr_bold clr_red "Changed resources in this PR more than 10 !!! exit."
+          exit 1
+        fi
+        set +e
+        rst=0
+        clr_bold clr_green ">>> Changed values files: "
+        echo; echo "${CHANGED_FILES}"; echo
+        for hcl in ${CHANGED_FILES}; do
+          echo
+          clr_bold clr_green ">>> Processing ${hcl}"
+          echo
+          account_dir=$(echo $hcl | cut -d/ -f1)
+          source ${account_dir}/.env
+          clr_bold clr_green $(env | grep TERRAGRUNT_IAM_ROLE)
+          working_dir=$(dirname ${hcl})
+          cd ${working_dir}
+          cmd="terragrunt plan"
+          echo; clr_bold clr_green ">>> ${cmd}"; ${cmd}
+          if [ "$?" = "0" ]; then
+            clr_bold clr_green "Planing ... OK!"
+          else
+            rst=1
+            clr_bold clr_red "Planing ... ERROR!"
+          fi
+          cd -
+        done
+        exit ${rst}

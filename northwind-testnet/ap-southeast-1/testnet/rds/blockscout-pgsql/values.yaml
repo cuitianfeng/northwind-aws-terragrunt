@@ -1,0 +1,26 @@
+app: pgsql
+project: blockscout
+owners: tf.cui
+engine: postgres
+engine_version: "13.20"
+family: "postgres13"
+major_engine_version: "13"
+allocated_storage: 100
+max_allocated_storage: 1000
+storage_type: gp3
+performance_insights_enabled: true
+instance_class: db.m6g.large
+vpc_selector:
+  cidr_block: 10.20.0.0/16
+  moniker: northwind-testnet
+subnet_selector:
+  cidr_blocks: 
+  - 10.20.15.0/24
+  - 10.20.16.0/24
+vpc_security_group_rules: |
+  ingress_with_cidr_blocks:
+  - rule: all-all
+    cidr_blocks: 10.20.0.0/16
+  egress_with_cidr_blocks:
+  - rule: all-all
+    cidr_blocks: 0.0.0.0/0

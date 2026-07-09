@@ -1,0 +1,26 @@
+moniker: northwind-testnet
+owners: tf.cui
+env: testnet
+cidr: 10.20.0.0/16
+public_subnets: 
+  - 10.20.10.0/24
+  - 10.20.11.0/24
+database_subnets:
+  - 10.20.15.0/24
+  - 10.20.16.0/24
+elasticache_subnets:
+  - 10.20.17.0/24
+  - 10.20.18.0/24
+private_subnets:
+  - 10.20.64.0/18
+  - 10.20.128.0/18
+azs:
+  - us-east-2a
+  - us-east-2b
+public_subnet_tags: 
+  kubernetes.io/role/elb: "1"
+private_subnet_tags: 
+  kubernetes.io/role/internal-elb: "1"
+enable_dns_hostnames: true
+enable_dns_support: true
+single_nat_gateway: true

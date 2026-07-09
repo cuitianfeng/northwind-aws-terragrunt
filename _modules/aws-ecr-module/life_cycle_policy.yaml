@@ -1,0 +1,19 @@
+rules:
+- rulePriority: 1
+  description: Keep last 10
+  selection:
+    tagStatus: tagged
+    tagPrefixList: ["main", "release", "commit", "20", "v"]
+    countType: imageCountMoreThan
+    countNumber: %d
+  action:
+    type: expire
+- rulePriority: 2
+  description: Remove untagged
+  selection:
+    tagStatus: untagged
+    countType: sinceImagePushed
+    countUnit: days
+    countNumber: 1
+  action:
+    type: expire

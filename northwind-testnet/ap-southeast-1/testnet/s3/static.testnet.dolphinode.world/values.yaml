@@ -1,0 +1,20 @@
+name: static.testnet.dolphinode.world
+project: northwind-chain
+owners: tf.cui
+custom_tags:
+  BillingGroup: northwind-chain
+policy: |
+  Version: "2012-10-17"
+  Statement: 
+  - Effect: Allow
+    Sid: "PublicRead"
+    Principal: 'AWS:arn:aws:iam::*'
+    Action:
+    - s3:GetObject
+    - s3:GetObjectVersion
+    Resource:
+    - arn:aws:s3:::static.testnet.dolphinode.world
+    - arn:aws:s3:::static.testnet.dolphinode.world/*
+attach_deny_insecure_transport_policy: false
+static_website_enabled: true
+website: {}
