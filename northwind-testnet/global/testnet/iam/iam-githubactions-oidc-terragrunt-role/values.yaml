@@ -1,0 +1,13 @@
+
+role_name: githubactions-oidc-terragrunt
+create_role: true
+max_session_duration: 3600
+provider_urls:
+- token.actions.githubusercontent.com
+aws_account_id: 191913451055
+role_policy_arns:
+- arn:aws:iam::aws:policy/AdministratorAccess
+oidc_fully_qualified_audiences:
+- sts.amazonaws.com
+oidc_subjects_with_wildcards:
+- repo:cuitianfeng/northwind-aws-terragrunt:*

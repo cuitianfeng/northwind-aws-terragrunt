@@ -15,6 +15,7 @@ variable "values" {
         iops                    = optional(number)
         instance_class          = string
         publicly_accessible     = optional(bool)
+        create_rds_slave        = optional(bool)
         username                = optional(string)
         performance_insights_enabled = optional(bool)
         performance_insights_kms_key_id = optional(string)
@@ -54,6 +55,7 @@ locals {
         maintenance_window    = "Mon:00:00-Mon:03:00"
         backup_window         = "03:00-06:00"
         backup_retention_period = 7
-        publicly_accessible = false
+        publicly_accessible   = false
+        create_rds_slave      = true
     })
 }

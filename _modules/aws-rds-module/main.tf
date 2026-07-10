@@ -55,6 +55,7 @@ module "rds_master" {
 
 
 module "rds_slave" {
+  count = local.values.create_rds_slave ? 1 : 0
   source  = "terraform-aws-modules/rds/aws"
   version = "3.4.1"
 

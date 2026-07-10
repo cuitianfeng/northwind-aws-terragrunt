@@ -1,10 +1,10 @@
 env: testnet
-project: elk
-app: es-node-01
+project: northwind
+app: nginx-node01
 owners: tianfeng.cui
 instance_type: t3.micro
-ami_id: ami-049f20cccc294bb90
-key_name: "northwind-jumpserver"
+ami_id: ami-0f6366a2a309b2110
+#key_name: "northwind-jumpserver"
 snapshort_enabled : false
 custom_tags:
   BillingGroup: northwind
@@ -12,38 +12,36 @@ vpc_selector:
   cidr_block: 192.168.0.0/16
   moniker: northwind-testnet
 subnet_selector:
-  cidr_block: 10.10.17.0/24  #subnet ip range
+  cidr_block: 192.168.64.0/18  #subnet ip range
 ebs_block_device: 
   /data:
     device_name: /dev/sdb
-    volume_size: 300
+    volume_size: 10
     volume_type: gp3
 root_block_device:
-  volume_size: 100
+  volume_size: 50
 vpc_security_group_rules: |
   ingress_with_cidr_blocks: 
   - rule: all-icmp
     cidr_blocks: 192.168.0.0/16
-  - rule: all-all
+  - from_port: 80
+    to_port: 80
+    protocol: tcp
     cidr_blocks: 192.168.0.0/16
-    description: allow access from aws internal net
+    description: allow all access http
+  - from_port: 443
+    to_port: 443
+    protocol: tcp
+    cidr_blocks: 192.168.0.0/16
+    description: allow all access https
   egress_with_cidr_blocks:
   - rule: all-all
     cidr_blocks: 0.0.0.0/0
 node_indices: [41]
 private_ips: 
-- 10.10.17.41
+- 192.168.64.41
 custom_role_policies: 
-inline_role_policies: 
-- policy_name: testpolicy
-  document: |
-    Version: "2012-10-17"
-    Statement: 
-    - Effect: Allow
-      Action: 
-      - s3:GetObject
-      Resource:
-      - arn:aws:s3:::static.northwind.com
+inline_role_policies:
 custom_userdata: |
   dnf update -y
   dnf install -y nginx

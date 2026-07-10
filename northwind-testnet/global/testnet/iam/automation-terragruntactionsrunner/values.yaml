@@ -1,13 +1,12 @@
 project: automation
 app: terragruntactionsrunner
-owners: yoda.gao
+owners: tevin.cui
 trusted_role_arns:
-- arn:aws:iam::346612984731:role/infra-infra-terragruntactionsrunner-role
-- arn:aws:iam::346612984731:role/githubactions-oidc-terragrunt
+- arn:aws:iam::191913451055:role/githubactions-oidc-terragrunt
 trusted_role_actions:
 - sts:AssumeRole
 - sts:TagSession
 role_requires_mfa: false
 custom_role_policy_arns: 
 - arn:aws:iam::aws:policy/AdministratorAccess
-inline_role_policies:
+inline_role_policies:cd

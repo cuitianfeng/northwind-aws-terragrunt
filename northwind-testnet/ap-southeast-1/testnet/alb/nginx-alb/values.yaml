@@ -1,0 +1,48 @@
+project: northwind
+app: nginx
+owners: tianfeng.cui
+load_balancer_type: "application"
+internal: false
+force_301_to_https: false
+vpc_selector:
+  cidr_block: 192.168.0.0/16
+  moniker: northwind-testnet
+subnet_selector:
+  cidr_blocks:
+  - 192.168.10.0/24
+  - 192.168.11.0/24
+security_groups: 
+  - sg-0f4a6cfb2ea52ee5c
+target_groups: |
+  - name_prefix: nginx-
+    backend_protocol: HTTP
+    backend_port: 80
+    target_type: instance
+    deregistration_delay: 10
+    stickiness: 
+      enabled: false
+      type: lb_cookie
+    health_check:
+      enabled: true
+      interval: 30
+      path: /
+      port: 80
+      protocol: HTTP
+      matcher: 200
+    protocol_version: HTTP1
+
+http_tcp_listeners: |
+  - port: 80
+    protocol: HTTP
+    action_type: fixed-response
+    fixed_response: 
+      content_type: text/plain
+      status_code: "404"
+http_tcp_listener_rules: |
+  - http_tcp_listener_index: 0
+    conditions:
+    - path_patterns:
+      - /*
+    actions:
+    - type: forward
+      target_group_index: 0

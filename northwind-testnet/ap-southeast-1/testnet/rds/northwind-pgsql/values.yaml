@@ -2,13 +2,15 @@ app: pgsql
 project: northwind
 owners: tf.cui
 engine: postgres
-engine_version: "13.20"
-family: "postgres13"
-major_engine_version: "13"
-allocated_storage: 100
+engine_version: "16.14"
+family: "postgres16"
+major_engine_version: "16"
+allocated_storage: 10
 max_allocated_storage: 1000
 performance_insights_enabled: true
 instance_class: db.t3.micro
+backup_retention_period: 0
+create_rds_slave: false
 vpc_selector:
   cidr_block: 192.168.0.0/16
   moniker: northwind-testnet
@@ -22,4 +24,4 @@ vpc_security_group_rules: |
     cidr_blocks: 192.168.0.0/16
   egress_with_cidr_blocks:
   - rule: all-all
-    cidr_blocks: 0.0.0.0/0
+    cidr_blocks: 0.0.0.0/0 

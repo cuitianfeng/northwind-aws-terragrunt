@@ -1,0 +1,39 @@
+project: northwind
+app: nginx
+env: testnet
+owners: tianfeng.cui
+instance_type: t3.medium
+ami_id: ami-0f6366a2a309b2110
+associate_public_ip_address: false
+#key_name: northwind-key
+ebs_block_device: 
+  /data:
+    device_name: /dev/sdb
+    volume_size: 10
+    volume_type: gp3
+root_block_device:
+  volume_size: 50
+custom_userdata: |
+  dnf update -y
+  dnf install -y nginx
+  systemctl enable nginx
+  systemctl start nginx
+vpc_selector:
+  cidr_block: 192.168.0.0/16
+  moniker: northwind-testnet
+subnet_selector:
+  cidr_block: 192.168.10.0/24
+vpc_security_group_rules: |
+  ingress_with_source_security_group_id:
+  - rule: http-80-tcp
+    source_security_group_id: sg-0f4a6cfb2ea52ee5c
+    description: allow http from alb security group
+  ingress_with_cidr_blocks:
+  - rule: ssh-tcp
+    cidr_blocks: 192.168.0.0/16
+    description: allow ssh from vpc
+  egress_with_cidr_blocks:
+  - rule: all-all
+    cidr_blocks: 0.0.0.0/0    
+custom_tags:
+  Role: nginx

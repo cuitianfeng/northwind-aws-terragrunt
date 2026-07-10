@@ -42,7 +42,7 @@ remote_state {
     #bucket         = "${local.bucket_prefix}-${local.account_name}-${local.aws_region}-tfstate"
     #key            = "${path_relative_to_include()}/terraform.tfstate"
     bucket         = "velafi-candidate-tfstate-bucket"
-    key            = "assessment.tfstate"
+    key            = "${path_relative_to_include()}/assessment.tfstate"
     region         = local.aws_region
     dynamodb_table = "terraform-locks"
   }
